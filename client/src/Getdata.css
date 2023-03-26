@@ -1,0 +1,42 @@
+.getdata {
+  margin: 2rem 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+table {
+  border-collapse: collapse;
+  margin: 20px;
+}
+
+thead {
+  background-color: #ccc;
+}
+
+th,
+td {
+  border: 1px solid black;
+  padding: 10px;
+}
+
+tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+tr:hover {
+  background-color: #ddd;
+}
+
+tr {
+  text-align: center;
+  align-items: center;
+  /* display: flex; */
+}
+.inputText {
+  /* min-width: 400px; */
+  display: inline-block;
+  width: 100%;
+}
+.ss {
+}
