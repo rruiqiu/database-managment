@@ -1,0 +1,24 @@
+{
+  "name": "database-managment",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "server": "npm start --prefix server",
+    "client": "npm start --prefix client",
+    "dev": "concurrently \"npm run server\" \"npm run client\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rruiqiu/database-managment.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rruiqiu/database-managment/issues"
+  },
+  "homepage": "https://github.com/rruiqiu/database-managment#readme",
+  "dependencies": {
+    "concurrently": "^7.6.0"
+  }
+}

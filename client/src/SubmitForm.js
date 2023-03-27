@@ -8,24 +8,29 @@ const SubmitForm = () => {
     message: ""
   })
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    Axios.post("http://localhost:3004/information", {
-      date: formData.date,
-      message: formData.message
-    })
-      .then(res => {
-        console.log(res.data)
-      })
-      .catch(err => {
-        console.log(err)
-      })
-    setFormData({
-      date: "",
-      message: ""
-    })
-    window.location.reload();
-  }
+
+    try {
+      await Axios.post("http://localhost:3004/information", {
+        date: formData.date,
+        message: formData.message,
+      });
+
+      setFormData({
+        date: "",
+        message: "",
+      });
+
+      // Reload the page after a brief delay to allow time for the state to update
+      setTimeout(() => {
+        window.location.reload();
+      }, 1000);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
 
   const handleChange = (event) => {
     const { name, value } = event.target
