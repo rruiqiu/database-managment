@@ -19,7 +19,6 @@ mongoose.connect(url)
 // })
 
 
-
 app.get("/", async function (req, res) {
   try {
     const posts = await Post.find(); // Retrieve all posts from the database
@@ -56,7 +55,8 @@ app.post("/information", async function (req, res) {
   try {
     const savedPost = await post.save();
     console.log("Post saved successfully:", savedPost);
-    res.sendStatus(200);
+    // res.sendStatus(200);
+    res.send(savedPost);
   } catch (err) {
     console.error("Error saving post:", err);
     res.sendStatus(500);
@@ -78,9 +78,6 @@ app.put("/:id", async (req, res) => {
     res.status(500).send(err);
   }
 });
-
-
-
 
 app.listen(parseInt(port), () => {
   console.log(`Example app listening on port ${parseInt(port)}`)

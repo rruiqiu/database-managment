@@ -1,11 +1,58 @@
 import './Getdata.css';
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-
+import Axios from 'axios'
 function Getdata () {
   const [posts, setPosts] = useState([]);
   const [editingPost, setEditingPost] = useState(null);
   const [updatedMessage, setUpdatedMessage] = useState("");
+  const [formData, setFormData] = useState({
+    date: "",
+    message: ""
+  })
+
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    try {
+      const response = await Axios.post("http://localhost:3004/information", { //
+        date: formData.date,
+        message: formData.message,
+      });
+      console.log(response)
+      setPosts([...posts, response.data]); // Add the new post to the existing posts array
+      setFormData({
+        date: "",
+        message: "",
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+
+
+  const handleChange = (event) => {
+    const { name, value } = event.target
+    setFormData({
+      ...formData,
+      [name]: value
+    })
+  }
+
+  function handleAutoDate () {
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = String(now.getMonth() + 1).padStart(2, '0');
+    const day = String(now.getDate()).padStart(2, '0');
+    const formattedDate = `${year}-${month}-${day}`;
+    setFormData(prevState => ({ ...prevState, date: formattedDate }));
+  }
+
+
+
+
 
   useEffect(() => {
     axios.get('http://localhost:3004/')
@@ -53,54 +100,53 @@ function Getdata () {
     setEditingPost(null);
   };
 
-
-  // const inputRef = useRef(null);
-
-  // const setInputWidth = () => {
-  //   const input = inputRef.current;
-  //   if (input) {
-  //     const inputWidth = input.value.length * 8; // adjust the factor to your liking
-  //     input.style.width = `${inputWidth}px`;
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   setInputWidth();
-  // }, [updatedMessage]);
-
-
   return (
-    <div className='getdata'>
-      <table>
-        <tbody>
-          {posts.map(post => (
-            <tr key={post._id}>
-              <td>{post.date}</td>
-              {editingPost && editingPost._id === post._id ? (
-                <>
-                  <td className='ss'>
-                    <input
-                      className='inputText'
-                      type="text"
-                      value={updatedMessage}
-                      onChange={(e) => setUpdatedMessage(e.target.value)}
-                    />
-                  </td>
-                  <td><button onClick={() => handleUpdate(post._id)}>Save</button></td>
-                  <td><button onClick={handleCancel}>Cancel</button></td>
-                </>
-              ) : (
-                <>
-                  <td>{post.message}</td>
-                  <td><button onClick={() => handleEdit(post)}>Edit</button></td>
-                </>
-              )}
-              <td><button onClick={() => handleDelete(post._id)}> - </button></td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
+    <section>
+      <form onSubmit={handleSubmit}>
+        <div>
+          <label>Date:</label>
+          <input type="text" name="date" value={formData.date} onChange={handleChange} />
+          <button type="button" onClick={handleAutoDate}>Auto-fill Date</button>
+        </div>
+        <div>
+          <label>Message:</label>
+          <textarea name="message" value={formData.message} onChange={handleChange}></textarea>
+        </div>
+        <button type="submit">Submit</button>
+      </form>
+
+      <div className='getdata'>
+        <table>
+          <tbody>
+            {posts.map(post => (
+              <tr key={post._id}>
+                <td>{post.date}</td>
+                {editingPost && editingPost._id === post._id ? (
+                  <>
+                    <td className='ss'>
+                      <input
+                        className='inputText'
+                        type="text"
+                        value={updatedMessage}
+                        onChange={(e) => setUpdatedMessage(e.target.value)}
+                      />
+                    </td>
+                    <td><button onClick={() => handleUpdate(post._id)}>Save</button></td>
+                    <td><button onClick={handleCancel}>Cancel</button></td>
+                  </>
+                ) : (
+                  <>
+                    <td>{post.message}</td>
+                    <td><button onClick={() => handleEdit(post)}>Edit</button></td>
+                  </>
+                )}
+                <td><button onClick={() => handleDelete(post._id)}> - </button></td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </section>
   );
 }
 
