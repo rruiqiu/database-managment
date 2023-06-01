@@ -21,7 +21,7 @@ function Getdata () {
         message: formData.message,
       });
       console.log(response)
-      setPosts([...posts, response.data]); // Add the new post to the existing posts array
+      // setPosts([...posts, response.data]); // Add the new post to the existing posts array
       setFormData({
         date: "",
         message: "",
@@ -62,7 +62,7 @@ function Getdata () {
       .catch(error => {
         console.log(error);
       });
-  }, []);
+  }, [posts]);//yes so basically add this posts, means need to update when posts change, very smart
 
   const handleEdit = (post) => {
 
@@ -91,7 +91,7 @@ function Getdata () {
     try {
       const response = await axios.delete(`http://localhost:3004/${postId}`);
       console.log(response.data); // prints { message: "Post deleted successfully!" }
-      setPosts(posts.filter(post => post._id !== postId));
+      // setPosts(posts.filter(post => post._id !== postId));
     } catch (err) {
       console.error("Error deleting post:", err);
     }
